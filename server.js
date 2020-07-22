@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const PORT = process.env.PORT || 3001;
 const app = express();
-const routes = require("./routes");
+const bookRoutes = require("./routes/api/books");
 const server = require("http").createServer(app);
 const cors = require("cors");
 require("dotenv").config();
@@ -25,7 +25,7 @@ io.on("connection", (client) => {
   client.on("disconnect", () => {});
 });
 
-app.use(routes);
+app.use("/api/books", bookRoutes);
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/googlebooks");
 console.log(process.env.MONGODB_URI);
