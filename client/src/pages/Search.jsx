@@ -11,31 +11,31 @@ function Search() {
   const [books, setBooks] = useState([]);
   const [bookSearch, setBookSearch] = useState("");
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const { value } = event.target;
     setBookSearch(value);
   };
 
-  const handleFormSubmit = event => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
     API.search(bookSearch)
-      .then(res => setBooks(res.data.items))
-      .catch(err => console.log(err));
-  }
+      .then((res) => setBooks(res.data.items))
+      .catch((err) => console.log(err));
+  };
 
-  const handleSaveBook = id => {
-    const book = books.find(book => book.id === id);
+  const handleSaveBook = (id) => {
+    const book = books.find((book) => book.id === id);
 
     API.saveBook({
       title: book.volumeInfo.title,
       authors: book.volumeInfo.authors,
       description: book.volumeInfo.description,
       link: book.volumeInfo.infoLink,
-      image: book.volumeInfo.imageLinks.thumbnail
-    })
-      .then(() => { alert(`${book.volumeInfo.title} was saved to your library!`) }
-      );
-  }
+      image: book.volumeInfo.imageLinks.thumbnail,
+    }).then(() => {
+      alert(`${book.volumeInfo.title} was saved to your library!`);
+    });
+  };
 
   return (
     <>
@@ -46,7 +46,13 @@ function Search() {
               <h1 className="display-4 jumboText">Google Book Search</h1>
               <br></br>
 
-              <a className="jumboText" href="https://developers.google.com/books" target="blank">Powered by Google Books API</a>
+              <a
+                className="jumboText"
+                href="https://developers.google.com/books"
+                target="blank"
+              >
+                Powered by Google Books API
+              </a>
             </JumboTron>
             <form>
               <Container>
@@ -63,7 +69,8 @@ function Search() {
                     <Button
                       onClick={handleFormSubmit}
                       type="success"
-                      className="input-lg">
+                      className="input-lg"
+                    >
                       Search
                     </Button>
                   </Col>
@@ -75,26 +82,29 @@ function Search() {
         <Row>
           <Col size="xs-10">
             <BookList>
-              {books.map(book => (
+              {books.map((book) => (
                 <BookListItem
                   key={book.id}
                   title={book.volumeInfo.title}
                   authors={
-                    !book.volumeInfo.authors ? "No author listed" : book.volumeInfo.authors.join(", ")
+                    !book.volumeInfo.authors
+                      ? "No author listed"
+                      : book.volumeInfo.authors.join(", ")
                   }
                   description={book.volumeInfo.description}
                   link={book.volumeInfo.infoLink}
                   image={
-                    !book.volumeInfo.imageLinks ? "https://placehold.it/100x100" : book.volumeInfo.imageLinks.thumbnail
+                    !book.volumeInfo.imageLinks
+                      ? "https://placehold.it/100x100"
+                      : book.volumeInfo.imageLinks.thumbnail
                   }
-
                   Button={() => (
                     <button
                       onClick={() => handleSaveBook(book.id)}
-                      className="btn saveBtn">
+                      className="btn saveBtn"
+                    >
                       Save
                     </button>
-
                   )}
                 />
               ))}
